@@ -6,7 +6,7 @@ struct Node
 	bool isEndOfWord;
 	struct Node * children[ALPHABATE_SIZE];//each of type node 
 };
-struct Node * getParentNode()
+struct Node * getNode()
 {
 	struct Node * newnode = new Node();
 	newnode->isEndOfWord=false;
@@ -25,7 +25,7 @@ void insert(struct Node *root, string key)
 	 	int index = (int)(key[i]-'a') ;
 	 	if (tempNode->children[index]==NULL)
 	 	{
-	 		tempNode->children[index]=getParentNode();
+	 		tempNode->children[index]=getNode();
 	 		tempNode=tempNode->children[index];
 	 	}
 	 } 
@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
 {
 	string keys[]={"aabc", "aab", "abcd", "def"};
 	int n = sizeof(keys)/sizeof(keys[0]);
-	struct Node *root = getParentNode();
+	struct Node *root = getNode();
 	for (int i = 0; i < n; ++i)
 	{
 		insert(root,keys[i]);
