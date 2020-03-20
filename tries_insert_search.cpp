@@ -1,63 +1,68 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int ALPHABATE_SIZE =26;
+const int size = 256;
 struct Node
 {
 	bool isEndOfWord;
-	struct Node * children[ALPHABATE_SIZE];//each of type node 
+	struct Node * children[size];
 };
 struct Node * getNode()
 {
-	struct Node * newnode = new Node();
-	newnode->isEndOfWord=false;
-	for (int i = 0; i < 26; ++i)
+	struct Node *temp;
+	temp = new Node();
+	temp->isEndOfWord= false;
+	for(int i=0;i<26;i++)
 	{
-		newnode->children[i]=NULL;
+		temp->children[i]=NULL;
 	}
-	return newnode;
+	return temp;
 }
+
 void insert(struct Node *root, string key)
 {
-	struct Node *tempNode = root;
-	//abcd
-	for (int i = 0; i < key.size(); ++i)
-	 {
-	 	int index = (int)(key[i]-'a') ;
-	 	if (tempNode->children[index]==NULL)
-	 	{
-	 		tempNode->children[index]=getNode();
-	 		tempNode=tempNode->children[index];
-	 	}
-	 } 
-	 tempNode->isEndOfWord=true;
-}
-bool searchKey(struct Node *root, string key)
-{
-	struct Node *tempNode= root;
-	for (int i = 0; i < key.size(); ++i)
+	struct Node *temp=root;
+	for(int i=0;i<key.size();i++)
 	{
 		int index = (int)(key[i]-'a');
-		if (tempNode->children[index]==NULL)
+		if (temp->children[index]==NULL)
+		{
+			temp->children[index]=getNode();
+		}
+		temp=temp->children[index];
+	}
+	temp->isEndOfWord=true;
+	return ;
+}
+bool search(struct Node *root, string key)
+{
+	struct Node *temp=root;
+	for(int i=0;i<key.size();i++)
+	{
+		int index = (int)(key[i]-'a');
+		if (temp->children[index]==NULL)
 		{
 			return false;
 		}
-		tempNode=tempNode->children[index];
+		temp=temp->children[index];
 	}
-	return (tempNode->isEndOfWord&&tempNode!=NULL); 
+	return (temp->isEndOfWord&&temp->children!=NULL);
 }
+
 int main(int argc, char const *argv[])
 {
-	string keys[]={"aabc", "aab", "abcd", "def"};
+	string keys[]={"abCd", "abcd","1234","abc", "abd", "def"};
 	int n = sizeof(keys)/sizeof(keys[0]);
-	struct Node *root = getNode();
-	for (int i = 0; i < n; ++i)
+	Node *root = getNode();
+	for(int i=0;i<n;i++)
 	{
 		insert(root,keys[i]);
 	}
-	string s= "aabc";
-	cout<<searchKey(root,"aabc")<<endl;
-	cout<<searchKey(root,"wxy")<<endl;
-	cout<<searchKey(root,"def")<<endl;
-	cout<<searchKey(root,"defg")<<endl;
+	cout<<search(root,"abCd")<<endl;
+	cout<<search(root,"abcd")<<endl;
+	cout<<search(root,"1234")<<endl;
+	cout<<search(root,"psqr")<<endl;
+	cout<<search(root,"def")<<endl;
+	cout<<search(root,"abd")<<endl;
+	cout<<search(root,"abcde")<<endl;
 	return 0;
 }
